@@ -1,0 +1,22 @@
+"""
+Constants.py
+contains draft kings integers for sports/categories
+Only using categories used on sleeper to start
+"""
+
+NBA_POINTS = 4991
+NBA_REBOUNDS = 4992
+NBA_ASSISTS = 5000
+NBA_THREES = 5209
+NBA_BLOCKS = 7346
+NBA_STEALS = 9971
+NBA_TO = 7965
+#NBA_DUB_DUB = 7136
+#NBA_TRIP_DUB = 7137
+#NBA_SCORING_LEADER = 10101
+#NBA_FIRST_FG = 5012
+#NBA_PTS_RB_AST = 5001
+#NBA_PTS_RB = 9976
+#NBA_PTS_AST = 9973
+#NBA_AST_RB = 9974
+#NBA_STL_BLK = 9975

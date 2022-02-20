@@ -1,8 +1,7 @@
 """"
 Copyright © Krypton 2021 - https://github.com/kkrypt0nn (https://krypt0n.co.uk)
 Description:
-This is a template to create your own discord bot in python.
-
+This is a modified template from Krypton
 Version: 4.1
 """
 
@@ -17,7 +16,8 @@ import disnake
 from disnake.ext import commands
 from disnake.ext.commands import Context
 
-from helpers import checks
+from helpers import constants, checks
+
 
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
@@ -41,7 +41,7 @@ class General(commands.Cog, name="general-normal"):
         :param context: The context in which the command has been executed.
         """
         embed = disnake.Embed(
-            description="Used [Krypton's](https://krypt0n.co.uk) template",
+            description="bot for grabbing player prop bets",
             color=0x9C84EF
         )
         embed.set_author(
@@ -49,7 +49,7 @@ class General(commands.Cog, name="general-normal"):
         )
         embed.add_field(
             name="Owner:",
-            value="Krypton#7331",
+            value="Dexter#0475",
             inline=True
         )
         embed.add_field(
@@ -197,17 +197,20 @@ class General(commands.Cog, name="general-normal"):
         await context.send(embed=embed)
 
     @commands.command(
-        name="bitcoin",
-        description="Get the current price of bitcoin.",
+        name="props",
+        description="Get player props above/below specified odds.",
     )
     @checks.not_blacklisted()
-    async def bitcoin(self, context: Context) -> None:
+    async def prop_grab(self, context: Context, sport: str, odds: int) -> None:
         """
-        Get the current price of bitcoin.
+        Get player props above or under specified odds in specified sport
         :param context: The context in which the command has been executed.
         """
+        if sport.lower() == 'nba':
+            for cat in constants:
+                print(cat)
         # This will prevent your bot from stopping everything when doing a web request - see: https://discordpy.readthedocs.io/en/stable/faq.html#how-do-i-make-a-web-request
-        async with aiohttp.ClientSession() as session:
+        """async with aiohttp.ClientSession() as session:
             async with session.get("https://api.coindesk.com/v1/bpi/currentprice/BTC.json") as request:
                 if request.status == 200:
                     data = await request.json(
@@ -224,6 +227,7 @@ class General(commands.Cog, name="general-normal"):
                         color=0xE02B2B
                     )
                 await context.send(embed=embed)
+        """
 
 
 def setup(bot):
