@@ -79,7 +79,7 @@ async def status_task() -> None:
     """
     Setup the game status task of the bot
     """
-    statuses = ["with you!", "with humans!"]
+    statuses = ["nothing!", "tests!"]
     await bot.change_presence(activity=disnake.Game(random.choice(statuses)))
 
 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     If you want to remove slash commands, which is not recommended due to the Message Intent being a privileged intent, you can remove the loading of slash commands below.
     """
     load_commands("slash")
-    load_commands("normal")
+    #load_commands("normal")
 
 
 @bot.event

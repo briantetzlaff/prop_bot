@@ -17,7 +17,7 @@ import disnake
 from disnake import ApplicationCommandInteraction, Option, OptionType
 from disnake.ext import commands
 
-from helpers import checks
+from helpers import checks, constants
 
 if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
@@ -49,7 +49,7 @@ class General(commands.Cog, name="general-slash"):
         )
         embed.add_field(
             name="Owner:",
-            value="Krypton#7331",
+            value="Dexter#0475",
             inline=True
         )
         embed.add_field(
@@ -109,23 +109,6 @@ class General(commands.Cog, name="general-slash"):
         )
         embed.set_footer(
             text=f"Created at: {interaction.guild.created_at}"
-        )
-        await interaction.send(embed=embed)
-
-    @commands.slash_command(
-        name="ping",
-        description="Check if the bot is alive.",
-    )
-    @checks.not_blacklisted()
-    async def ping(self, interaction: ApplicationCommandInteraction) -> None:
-        """
-        Check if the bot is alive.
-        :param interaction: The application command interaction.
-        """
-        embed = disnake.Embed(
-            title="🏓 Pong!",
-            description=f"The bot latency is {round(self.bot.latency * 1000)}ms.",
-            color=0x9C84EF
         )
         await interaction.send(embed=embed)
 
@@ -205,33 +188,45 @@ class General(commands.Cog, name="general-slash"):
         await interaction.send(embed=embed)
 
     @commands.slash_command(
-        name="bitcoin",
-        description="Get the current price of bitcoin.",
+        name="props",
+        description="Get player props above/below specified odds.",
+        options=[
+            Option(
+                name="sport",
+                description="The sport you want to look at.",
+                type=OptionType.string,
+                required=True
+            ),
+            Option(
+                name="odds",
+                description="The odds breakpoint you're looking at",
+                type=OptionType.integer,
+                required=True
+            )
+        ],
     )
     @checks.not_blacklisted()
-    async def bitcoin(self, interaction: ApplicationCommandInteraction) -> None:
+    async def prop_grab(self, interaction: ApplicationCommandInteraction, sport: str, odds: int) -> None:
         """
-        Get the current price of bitcoin.
-        :param interaction: The application command interaction.
+        Get player props above or under specified odds in specified sport
         """
-        # This will prevent your bot from stopping everything when doing a web request - see: https://discordpy.readthedocs.io/en/stable/faq.html#how-do-i-make-a-web-request
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://api.coindesk.com/v1/bpi/currentprice/BTC.json") as request:
-                if request.status == 200:
-                    data = await request.json(
-                        content_type="application/javascript")  # For some reason the returned content is of type JavaScript
-                    embed = disnake.Embed(
-                        title="Bitcoin price",
-                        description=f"The current price is {data['bpi']['USD']['rate']} :dollar:",
-                        color=0x9C84EF
-                    )
-                else:
-                    embed = disnake.Embed(
-                        title="Error!",
-                        description="There is something wrong with the API, please try again later",
-                        color=0xE02B2B
-                    )
-                await interaction.send(embed=embed)
+        sport_value = constants.SPORTS.get(sport.upper())
+        for cat, value in constants.NBA.items():
+            url = (f"https://sportsbook.draftkings.com//sites/US-SB/api/"\
+                    f"v4/eventgroups/88670846/categories/{sport_value}/subcategories/{value}?format=json")
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as request:
+                    data = await request.json(content_type="application/json")
+                    embed = disnake.Embed(title="Test",
+                                          description=f"{data}")
+            if data.get('errorStatus').get('code') == 'BET120':
+                embed = disnake.Embed(
+                    title="Error",
+                    description="No player props found :("
+                )
+                break
+
+        await interaction.send(embed=embed)
 
 
 def setup(bot):

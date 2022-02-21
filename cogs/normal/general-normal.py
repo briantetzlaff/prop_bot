@@ -161,7 +161,7 @@ class General(commands.Cog, name="general-normal"):
         :param context: The context in which the command has been executed.
         """
         embed = disnake.Embed(
-            description=f"Join the support server for the bot by clicking [here](https://discord.gg/mTBrXyWxAF).",
+            description=f"Join the support server for the bot by clicking [here]().",
             color=0xD75BF4
         )
         try:

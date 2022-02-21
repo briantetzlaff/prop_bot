@@ -45,52 +45,6 @@ class Owner(commands.Cog, name="owner-slash"):
         await self.bot.close()
 
     @commands.slash_command(
-        name="say",
-        description="The bot will say anything you want.",
-        options=[
-            Option(
-                name="message",
-                description="The message you want me to repeat.",
-                type=OptionType.string,
-                required=True
-            )
-        ],
-    )
-    @checks.is_owner()
-    async def say(self, interaction: ApplicationCommandInteraction, message: str) -> None:
-        """
-        The bot will say anything you want.
-        :param interaction: The application command interaction.
-        :param message: The message that should be repeated by the bot.
-        """
-        await interaction.send(message)
-
-    @commands.slash_command(
-        name="embed",
-        description="The bot will say anything you want, but within embeds.",
-        options=[
-            Option(
-                name="message",
-                description="The message you want me to repeat.",
-                type=OptionType.string,
-                required=True
-            )
-        ],
-    )
-    @checks.is_owner()
-    async def embed(self, interaction: ApplicationCommandInteraction, message: str) -> None:
-        """
-        The bot will say anything you want, but using embeds.
-        :param interaction: The application command interaction.
-        :param message: The message that should be repeated by the bot.
-        """
-        embed = disnake.Embed(
-            description=message,
-            color=0x9C84EF
-        )
-        await interaction.send(embed=embed)
-
-    @commands.slash_command(
         name="blacklist",
         description="Get the list of all blacklisted users.",
     )
