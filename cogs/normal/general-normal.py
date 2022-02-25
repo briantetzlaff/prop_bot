@@ -196,39 +196,6 @@ class General(commands.Cog, name="general-normal"):
         )
         await context.send(embed=embed)
 
-    @commands.command(
-        name="props",
-        description="Get player props above/below specified odds.",
-    )
-    @checks.not_blacklisted()
-    async def prop_grab(self, context: Context, sport: str, odds: int) -> None:
-        """
-        Get player props above or under specified odds in specified sport
-        :param context: The context in which the command has been executed.
-        """
-        if sport.lower() == 'nba':
-            for cat in constants:
-                print(cat)
-        # This will prevent your bot from stopping everything when doing a web request - see: https://discordpy.readthedocs.io/en/stable/faq.html#how-do-i-make-a-web-request
-        """async with aiohttp.ClientSession() as session:
-            async with session.get("https://api.coindesk.com/v1/bpi/currentprice/BTC.json") as request:
-                if request.status == 200:
-                    data = await request.json(
-                        content_type="application/javascript")  # For some reason the returned content is of type JavaScript
-                    embed = disnake.Embed(
-                        title="Bitcoin price",
-                        description=f"The current price is {data['bpi']['USD']['rate']} :dollar:",
-                        color=0x9C84EF
-                    )
-                else:
-                    embed = disnake.Embed(
-                        title="Error!",
-                        description="There is something wrong with the API, please try again later",
-                        color=0xE02B2B
-                    )
-                await context.send(embed=embed)
-        """
-
 
 def setup(bot):
     bot.add_cog(General(bot))

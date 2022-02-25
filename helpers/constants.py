@@ -4,13 +4,13 @@ contains draft kings integers for sports/categories
 Only using categories used on sleeper to start
 """
 NBA = {
-        "POINTS": 4991,
-        "REBOUNDS": 4992,
-        "ASSISTS": 5000,
-        "THREES": 5209,
-        "BLOCKS": 7346,
-        "STEALS": 9971,
-        "TO": 7965
+        "POINTS": 4991
+        , "REBOUNDS": 4992
+        , "ASSISTS": 5000
+#        , "THREES": 6209
+#        , "BLOCKS": 7346
+#        , "STEALS": 9971
+#        , "TO": 7965
     }
 
 SPORTS = {
