@@ -3,7 +3,7 @@ Constants.py
 contains draft kings integers for sports/categories
 Only using categories used on sleeper to start
 """
-NBA = {
+BB = {
         "POINTS": 4991
         , "REBOUNDS": 4992
         , "ASSISTS": 5000
@@ -14,7 +14,8 @@ NBA = {
     }
 
 SPORTS = {
-        "NBA": 583
+        "NBA": 88670846,
+        "NCAABB": 88670771
 }
 #NBA_DUB_DUB = 7136
 #NBA_TRIP_DUB = 7137

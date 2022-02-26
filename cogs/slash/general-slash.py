@@ -33,11 +33,12 @@ def reduce_props(spread: int, subcat: str, df: dict):
     # offerCategory == 583 is player props #
     props = next(i for i in cats if i['offerCategoryId'] == 583).get('offerSubcategoryDescriptors')
     for i in props:
-        if i.get("subcategoryId") == constants.NBA.get(subcat):
+        if i.get("subcategoryId") == constants.BB.get(subcat):
             for offer_list in i.get("offerSubcategory").get("offers"):
                 for offer in offer_list:
                     for ou in offer.get("outcomes"):
-                        if (int(ou.get("oddsAmerican"))) <= spread:
+                        # only do 'Overs' and favorites for now. Can expand back again later
+                        if (int(ou.get("oddsAmerican"))) <= spread and ou.get('label') == 'Over':
                             new_row = pd.DataFrame({'name': [offer.get('label')], 'bet_label': [ou.get('label')],
                                                     'line': [ou.get('line')], 'odds': [ou.get('oddsAmerican')]})
                             save = pd.concat([save, new_row], axis=0, ignore_index=True)
@@ -92,9 +93,12 @@ class General(commands.Cog, name="general-slash"):
         """
         Get player props under specified odds in specified sport
         """
-        sport_value = constants.SPORTS.get(sport.upper())
         if sport.upper() == 'NBA':
-            cats = constants.NBA.items()
+            cats = constants.BB.items()
+            sport_value = constants.SPORTS.get(sport.upper())
+        elif sport.upper() == 'NCAABB' or sport.upper == 'NCAAM':
+            cats = constants.BB.items()
+            sport_value = constants.SPORTS.get('NCAABB')
         else:
             embed = disnake.Embed(
                 title="Error",
@@ -104,7 +108,7 @@ class General(commands.Cog, name="general-slash"):
             return
         for cat, value in cats:
             url = (f"https://sportsbook.draftkings.com//sites/US-SB/api/" \
-                   f"v4/eventgroups/88670846/categories/{sport_value}/subcategories/{value}?format=json")
+                   f"v4/eventgroups/{sport_value}/categories/583/subcategories/{value}?format=json")
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as request:
                     data = await request.json(content_type="application/json")
@@ -121,7 +125,7 @@ class General(commands.Cog, name="general-slash"):
                         )
                 props = reduce_props(odds, cat, data)
                 embed = disnake.Embed(
-                    title=cat,
+                    title=sport.upper() + ' ' + cat,
                     description=props.to_string(index=False, header=False)
                 )
                 await interaction.send(embed=embed)
