@@ -1,11 +1,3 @@
-""""
-Copyright © Krypton 2021 - https://github.com/kkrypt0nn (https://krypt0n.co.uk)
-Description:
-This is a template to create your own discord bot in python.
-
-Version: 4.1
-"""
-
 import json
 import os
 import platform
@@ -79,7 +71,7 @@ async def status_task() -> None:
     """
     Setup the game status task of the bot
     """
-    statuses = ["nothing!", "tests!"]
+    statuses = ["the draft kings lotto", "tests!"]
     await bot.change_presence(activity=disnake.Game(random.choice(statuses)))
 
 

@@ -1,15 +1,5 @@
-""""
-Copyright © Krypton 2021 - https://github.com/kkrypt0nn (https://krypt0n.co.uk)
-Description:
-This is a template to create your own discord bot in python.
-
-Version: 4.1
-"""
-
 import json
 import os
-import platform
-import random
 import sys
 import pandas as pd
 import aiohttp
@@ -19,17 +9,18 @@ from disnake.ext import commands
 
 from helpers import checks, constants
 
-if not os.path.isfile("config.json"):
+""" 
+# if not os.path.isfile("config.json"):
     sys.exit("'config.json' not found! Please add it and try again.")
 else:
     with open("config.json") as file:
         config = json.load(file)
+"""
 
 
 def reduce_props(spread: int, subcat: str, df: dict):
     save = pd.DataFrame(columns=['name', 'bet_label', 'line', 'odds'])
     cats = df.get("eventGroup").get("offerCategories")
-
     # offerCategory == 583 is player props #
     props = next(i for i in cats if i['offerCategoryId'] == 583).get('offerSubcategoryDescriptors')
     for i in props:
@@ -37,7 +28,6 @@ def reduce_props(spread: int, subcat: str, df: dict):
             for offer_list in i.get("offerSubcategory").get("offers"):
                 for offer in offer_list:
                     for ou in offer.get("outcomes"):
-                        # only do 'Overs' and favorites for now. Can expand back again later
                         if (int(ou.get("oddsAmerican"))) <= spread and ou.get('label') == 'Over':
                             new_row = pd.DataFrame({'name': [offer.get('label')], 'bet_label': [ou.get('label')],
                                                     'line': [ou.get('line')], 'odds': [ou.get('oddsAmerican')]})
@@ -125,7 +115,7 @@ class General(commands.Cog, name="general-slash"):
                         )
                 props = reduce_props(odds, cat, data)
                 embed = disnake.Embed(
-                    title=sport.upper() + ' ' + cat,
+                    title=cat,
                     description=props.to_string(index=False, header=False)
                 )
                 await interaction.send(embed=embed)
